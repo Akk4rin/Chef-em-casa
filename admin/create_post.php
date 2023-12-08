@@ -24,6 +24,11 @@ include_once('../components/admin/header.php');
             <hr>
             <div class="card">
                 <div class="card-body">
+                <?php if (isset($_SESSION['message'])){ ?>
+                <div class="alert alert-<?= $_SESSION['message_type'] ?>" role="alert">
+                    <?php echo $_SESSION['message']; ?>
+                </div>
+                <?php unset($_SESSION['message']); } ?>
                     <form action="requests/request_create_post.php" method="post" enctype="multipart/form-data">
                         <div class="form-group">
                             <label for="title">Título da Postagem</label>
@@ -35,7 +40,7 @@ include_once('../components/admin/header.php');
                         </div>
                         <div class="form-group">
                             <label for="image">Imagem da Postagem</label>
-                            <input type="file" class="form-control-file" id="image" name="image">
+                            <input type="file" class="form-control-file" id="image" name="image" accept="image/">
                         </div>
                         <button type="submit" class="btn btn-primary">Publicar</button>
                     </form>
