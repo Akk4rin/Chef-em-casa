@@ -42,7 +42,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $user_id = $_SESSION ['user_id'];
 
 
-        $image = "src/img/receitas/" . $randonName;
+        $image = "src/img/receitas" . $randonName;
 
         $query = "INSERT INTO posts (user_id, title, content, image, views) VALUES ('$user_id', '$title', '$content', '$image', 0)";
  

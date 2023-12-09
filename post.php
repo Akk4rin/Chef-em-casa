@@ -1,8 +1,43 @@
 <?php
 
+include_once ('helpers/database.php');
+
+  //conexão com o banco de dados
+$connection = connectDatabase();
+
+//pegamos a id da URL
+
+ $post_id =$_GET['post_id'];
+
+ //validaçao se nao é nada malicioso
+
+ $post_id = mysqli_real_escape_string($connection, $post_id);
+
+ //query para selecionar o post acessado 
+
+ $query = "SELECT * FROM posts WHERE id = '$post_id'";
+
+ //execução da query no banco 
+
+ $result = mysqli_query($connection, $query);
+
+ //verifica se retornou algo 
+
+ if(mysqli_num_rows($result) > 0){
+    //transforma o resultado em um array associativo
+    $row = mysqli_fetch_assoc($result);
+    $title = $row ['title'];
+    $date = $row ['created_at'];
+    $content = $row ['content'];
+    $image = $row ['image'];
+
+ }else{
+    echo "Publicação não encontrada";
+ }
+
  $pageInfo = array(
   'title' => 'Título da Postagem - Chef em Casa',
-  'description' => 'Descrição da Postagem',
+  'description' => substr($content, 0 , 120),
   'pageName' => 'posts',
 );
 
@@ -17,12 +52,15 @@ include_once(__DIR__ . '/components/public/header.php');
         <div class="row">
             <div class="col-md-8 card">
                 <div class="card-body">
-                    <img src="src/img/12-min.png" class="img-fluid" alt="Escondidinho de Carne Seca">
-                    <h1 class="mt-4">Escondidinho de Carne Seca</h1>
-                    <p class="text-muted">Postado em 01 de Janeiro de 2023</p>
+                    <img src="<?php echo $image; ?>" class="img-fluid" alt="Escondidinho de Carne Seca">
+                    <h1 class="mt-4">
+                        <?php  echo $title ; ?>
+                    </h1>
+                    <p class="text-muted">
+                        <?php echo $date ; ?>
+                    </p>
                     <p>
-                        Um delicioso escondidinho de carne seca com purê de mandioca e queijo coalho gratinado. Descubra
-                        como fazer essa receita incrível em sua própria cozinha.
+                        <?php echo $content; ?> 
                     </p>
                     <p>
                         Ingredientes:
