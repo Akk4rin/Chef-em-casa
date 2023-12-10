@@ -44,6 +44,12 @@ $connection = connectDatabase();
 $pageName = $pageInfo['pageName'];
 
 include_once(__DIR__ . '/components/public/header.php');
+
+date_default_timezone_set('America/Sao_Paulo');
+$dateHora = new DateTime();
+setlocale(LC_TIME, 'pt_BR','ptb' );
+$dataExtenso = strftime('%d/de %B/de %Y' ,$dateHora -> getTimestamp());
+
 ?>
 <main class="container">
 
@@ -57,7 +63,7 @@ include_once(__DIR__ . '/components/public/header.php');
                         <?php  echo $title ; ?>
                     </h1>
                     <p class="text-muted">
-                        <?php echo $date ; ?>
+                        <?php echo $dataExtenso ; ?>
                     </p>
                     <p>
                         <?php echo $content; ?> 
