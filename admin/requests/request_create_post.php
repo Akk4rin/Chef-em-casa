@@ -4,56 +4,52 @@ session_start();
 include_once ('../../helpers/database.php');
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $title = $_POST["title"];
-    $content = $_POST["content"];
 
+    $title = $_POST['title'];
+    $content = $_POST['content'];
 
-
-    // configuração para upload do arquivo
-
+    //  Configuração para o upload da imagem
     $targetDir = "../../src/img/receitas/";
-    $randonName = uniqid() . "_" . basename($_FILES['image']['name']);
-    $targetFile = $targetDir . $randonName;
+    $randomName = uniqid() . "_" . basename($_FILES['image']['name']);
+    $targetFile = $targetDir . $randomName;
     $uploadOk = 1;
     $imageFileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
 
-    // validação da imagem
+    // Validação da imagem
 
-    if(!getimagesize($_FILES['image']['tmp_name']) || file_exists($targetFile)|| $_FILES['image']['size'] > 500000){
-        echo $_SESSION['message'] = "Desculpe, sua imagem de ter no máximo 5MB.";
+    if(!getimagesize($_FILES['image']['tmp_name']) || file_exists($targetFile) || $_FILES['image']['size'] > 500000){
+        $_SESSION['message'] = "Desculpe, a sua imagem deve ter no máximo 5MB.";
         $_SESSION['message_type'] = "danger";
         $uploadOk = 0;
-        header("Location:../create_post.php");
+        header("Location: ../create_post.php");
     }
 
     if($uploadOk == 1 && move_uploaded_file($_FILES['image']['tmp_name'], $targetFile)){
-        //conecta no banco de dados
+        // Conecta no banco de dados
         $connection = connectDatabase();
-
         
+        $title = mysqli_real_escape_string($connection, $title);
+        $content = mysqli_real_escape_string($connection, $content);
 
-    // Usar prepared statements para proteger contra SQL injection
-    $title = mysqli_real_escape_string($connection, $title);
-    $content = mysqli_real_escape_string($connection, $content);
+        // Obtém o id usuário logado
+        $user_id = $_SESSION['user_id'];
 
-
-
-        //obtem o id do usuario
-        $user_id = $_SESSION ['user_id'];
-
-
-        $image = "src/img/receitas/" . $randonName;
+        $image = "src/img/receitas/" . $randomName;
 
         $query = "INSERT INTO posts (user_id, title, content, image, views) VALUES ('$user_id', '$title', '$content', '$image', 0)";
- 
-    if(mysqli_query($connection, $query)) {
-       echo $_SESSION['message'] ='Post cadastrado';
-       $_SESSION['message_type'] = "success";
-       header("Location:../posts.php");
-    }else{
-        echo $_SESSION['message'] = "Ocorreu um erro ao cadastrar sua postagem";
-        $_SESSION['message_type'] = "danger";
-        header("Location:../create_post.php");
-    }   
-}
+
+        if(mysqli_query($connection, $query)){
+            $_SESSION['message'] = "Sua postagem foi publicada com sucesso";
+            $_SESSION['message_type'] = "success";
+            header("Location: ../posts.php");
+        }else{
+            $_SESSION['message'] = "Ocorreu um erro ao cadastrar sua postagem";
+            $_SESSION['message_type'] = "danger";
+            header("Location: ../create_post.php");
+        }
+    }
+
+
+
+
 }

@@ -6,7 +6,6 @@ if(!isset($_SESSION['user_id'])){
 }
 
 include_once('../helpers/database.php');
-
 $connection = connectDatabase();
 
 ?>

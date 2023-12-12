@@ -6,7 +6,3 @@ Projeto desenvolvido no curso do Senac 2023.2
 - Bootstrap
 - PHP
 - MySQL
-
-# Co- Autor 
-
-- Fabiano Costa

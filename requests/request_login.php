@@ -36,13 +36,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             header("Location: ../admin/index.php");
         }else{
             // Falar esta incorreta
-            echo $_SESSION['login_error'] = 'Senha está incorreta';
-             header("Location: ../login.php");
+            $_SESSION['login_error'] = 'Senha está incorreta';
+            header("Location: ../login.php");
         }
 
     }else{
-        echo $_SESSION['login_error'] = 'E-mail incorreto ou não existe';
-          header("Location: ../login.php");
+        $_SESSION['login_error'] = 'E-mail incorreto ou não existe';
+        header("Location: ../login.php");
     }
 
     mysqli_close($connection);

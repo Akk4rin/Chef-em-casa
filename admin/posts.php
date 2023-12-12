@@ -7,7 +7,8 @@ $pageInfo = array(
 
 include_once('../components/admin/header.php');
 
-$query = "SELECT * FROM posts WHERE user_id = " .$_SESSION['user_id'];
+
+$query = "SELECT * FROM posts WHERE user_id = " . $_SESSION['user_id'];
 
 $result = mysqli_query($connection, $query);
 
@@ -36,11 +37,13 @@ if(mysqli_num_rows($result) > 0){
                 Criar nova postagem
             </a>
             <hr>
-            <?php if (isset($_SESSION['message'])){ ?>
+
+            <?php if(isset($_SESSION['message'])){ ?>
                 <div class="alert alert-<?= $_SESSION['message_type'] ?>" role="alert">
                     <?php echo $_SESSION['message']; ?>
                 </div>
-                <?php unset($_SESSION['message']); } ?>
+            <?php unset($_SESSION['message']); } ?>
+            
             <div class="card">
                 <div class="card-body">
                     <table class="table table-hover table-striped">
@@ -53,32 +56,33 @@ if(mysqli_num_rows($result) > 0){
                             </tr>
                         </thead>
                         <tbody>
-                        <?php
-                        foreach($posts as $post){
-                        ?>
+
+                        <?php foreach($posts as $post){ ?>
+
                             <tr>
                                 <td>
-                                    <?php echo $post['title'];  ?>
+                                    <?php echo $post['title']; ?>
                                 </td>
                                 <td>
-                                    <?php echo substr($post['content'], 0 , 120). '....';
-                                    ?> 
+                                    <?php 
+                                        echo substr($post['content'], 0, 120) . '...';
+                                    ?>
                                 </td>
                                 <td>
-                                <?php echo date('d/m/Y', strtotime( $post['created_at']) )?> 
+                                    <?php echo date('d/m/Y', strtotime($post['created_at']) ); ?>
                                 </td>
                                 <td>
-    
                                     <div class="dropdown">
                                         <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             Ações
                                         </button>
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                            <a class="dropdown-item" href="#">
+                                            <a class="dropdown-item" href=" edit_post.php?post_id=<?php echo $post['id']; ?>">
                                                 <i class="fas fa-edit"></i>
                                                 Editar
                                             </a>
-                                            <a class="dropdown-item text-danger" href="#">
+                                            <a class="dropdown-item text-danger" href="#" 
+                                            onclick="confirm('Voce realmente deseja apagar esta publicação?') ? window.location.href='requests/request_delete_post.php?post_id=<?php echo $post['id']; ?>' : '' ">
                                                 <i class="fas fa-trash"></i>
                                                 Excluir
                                             </a>
@@ -90,7 +94,7 @@ if(mysqli_num_rows($result) > 0){
                                     </div>
                                 </td>
                             </tr>
-                            <?php }  ?>       
+                        <?php } ?>
                             <!-- Adicione mais linhas conforme necessário -->
                         </tbody>
                     </table>
