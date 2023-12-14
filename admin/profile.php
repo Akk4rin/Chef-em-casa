@@ -6,6 +6,46 @@ $pageInfo = array(
 );
 
 include_once('../components/admin/header.php');
+
+// incluir a conexão do banco de dados 
+
+$connection = connectDatabase();
+
+// verificar se o usuario em questão está logado 
+
+if(isset($_SESSION['user_id'])){
+    $user_id = $_SESSION['user_id'];
+
+
+$query = "SELECT
+ name as user_name,
+ email as user_email,
+ about as user_about,
+ image as user_image
+FROM users
+WHERE id = '$user_id'";
+
+$result = mysqli_query($connection, $query);
+
+if($result && mysqli_num_rows($result) > 0){
+    $row = mysqli_fetch_assoc($result);
+    $name = $row ['user_name'];
+    $email = $row ['user_email'];
+    $about = $row ['user_about'];
+    $image = $row ['user_image'];   
+}else{
+    header('Location: ../404.php');
+    exit();
+} 
+
+}else{
+    header('Location: ../login.php');
+    exit();
+}
+
+
+
+
 ?>
 
 <!-- Conteúdo da página de perfil -->
@@ -15,28 +55,37 @@ include_once('../components/admin/header.php');
         <section class="col-md-4">
             <div class="card">
                 <div class="card-body">
-                    <img src="https://media.licdn.com/dms/image/D4D03AQGdVJQdQIFHrA/profile-displayphoto-shrink_800_800/0/1697559933642?e=1707955200&v=beta&t=B_cR2QTCfdLhFUoscHZ5LmXjJtegIUQXXV-hNZdzS7c"
+                    <img src="<?php echo $image?>"
                         alt="Foto de Perfil" class="img-fluid mb-3">
                     <h5>
-                        Matheus Teixeira
+                        <?php echo $name?>
                     </h5>
                     <p>
-                        Desenvolvedor Web
+                    <?php echo $about?>
                     </p>
-                    <p>Email: contato.matheusteixeira@gmail.com</p>
+                    <p>Email: <?php echo $email?></p>
                 </div>
             </div>
             <div class="card mt-3">
                 <div class="card-body">
                     <form action="">
+                    <div class="form-group">
+                            <label for="image">Foto de Perfil</label>
+                            <input type="file" class="form-control" id="image" name="image">
+                        </div>
                         <div class="form-group">
                             <label for="name">Nome</label>
-                            <input type="text" class="form-control" id="name" value="Matheus Teixeira">
+                            <input type="text" class="form-control" id="name" value="<?php echo $name ?>">
                         </div>
                         <div class="form-group">
                             <label for="email">Endereço de Email</label>
                             <input type="email" class="form-control" id="email"
-                                value="contato.matheusteixeira@gmail.com">
+                                value="<?php echo $email ?>">
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Senha</label>
+                            <input type="password" class="form-control" id="password"
+                                value="password">
                         </div>
                         <div class="form-group">
                             <label for="password">Nova Senha</label>

@@ -23,7 +23,7 @@
         </div>
         <div class="row mt-4">
             <div class="col text-center">
-                <p class="text-light">Feito com <i class="fas fa-heart text-danger"></i> por Matheus Teixeira.</p>
+                <p class="text-light">Feito com <i class="fas fa-heart text-danger"></i> por Fabiano Costa.</p>
             </div>
         </div>
     </div>
