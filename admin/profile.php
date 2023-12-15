@@ -16,7 +16,7 @@ $connection = connectDatabase();
 if(isset($_SESSION['user_id'])){
     $user_id = $_SESSION['user_id'];
 
-
+// query para buscar as informaçoes do banco de dados 
 $query = "SELECT
  name as user_name,
  email as user_email,
@@ -68,7 +68,7 @@ if($result && mysqli_num_rows($result) > 0){
             </div>
             <div class="card mt-3">
                 <div class="card-body">
-                    <form action="">
+                    <form action="requests/request_edit_profile.php" method="POST" enctype="multipart/form-data">
                     <div class="form-group">
                             <label for="image">Foto de Perfil</label>
                             <input type="file" class="form-control" id="image" name="image">
@@ -83,13 +83,18 @@ if($result && mysqli_num_rows($result) > 0){
                                 value="<?php echo $email ?>">
                         </div>
                         <div class="form-group">
+                            <label for="about">Sobre</label>
+                            <input type="about" class="form-control" id="about"
+                                value="<?php echo $about ?>">
+                        </div>
+                        <div class="form-group">
                             <label for="password">Senha</label>
                             <input type="password" class="form-control" id="password"
                                 value="password">
                         </div>
                         <div class="form-group">
-                            <label for="password">Nova Senha</label>
-                            <input type="password" class="form-control" id="password">
+                            <label for="password_confirm">Nova Senha</label>
+                            <input type="password" class="form-control" id="password_confirm" name="password_confirm">
                         </div>
                         <button type="submit" class="btn btn-primary">Salvar Alterações</button>
                     </form>
