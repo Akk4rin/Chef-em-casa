@@ -2,15 +2,22 @@
 
 session_start();
 
-// verifica se o usuario está logado 
 
-if(!isset($_SESSION['user_id'])){
-    header('Location; ../login.php');
-}
 
 include_once('../../helpers/database.php');
 
 $connection = connectDatabase();
+
+// verifica se o usuario está logado 
+
+if(!isset($_SESSION['user_id'])){
+    header('Location; ../login.php');
+}else{
+    //Redirecionando o usuario para a pagina de perfil com a mensagem de erro 
+    $_SESSION['message'] = 'Erro ao editar o perfil.';
+    $_SESSION['message_type'] ='danger';
+    header('Location: ../../profile.php');
+}
 
 if ($_SERVER["REQUEST_METHOD"] == "POST"){
     // Obtém os dados do formulário
@@ -32,7 +39,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
      $image = mysqli_real_escape_string($connection, $image);
 
      $password_hashed = password_hash($password, PASSWORD_DEFAULT);
-
 
 
      //verificar se a imagem nova foi enviada
